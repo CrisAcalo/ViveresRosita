@@ -1,6 +1,4 @@
-const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
-
 const { sequelize } = require('../libs/sequelize');
 
 class ProductService {
@@ -14,13 +12,15 @@ class ProductService {
   }
 
   async find() {
-    return this.Product.findAll({
-      include: ['category']
-    });
+    return this.Product.findAll();
   }
 
   async findOne(id) {
-    const product = await this.Product.findByPk(id);
+    const product = await this.Product.findByPk(id,
+      {
+        include: ['category']
+      }
+    );
     if (!product) {
       throw boom.notFound('Product not found');
     }

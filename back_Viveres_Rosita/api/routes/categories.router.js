@@ -39,10 +39,10 @@ router.post('/',
         data: newCategory,
       });
     } catch (error) {
-      res.json(error);
-      // next(error);
+      next(error);
     }
-  });
+  }
+);
 router.patch('/:id',
   validatorHandler(getCategorySchema, 'params'),
   validatorHandler(updateCategorySchema, 'body'),
@@ -59,7 +59,8 @@ router.patch('/:id',
     } catch (error) {
       next(error);
     }
-  });
+  }
+);
 router.delete('/:id',
   validatorHandler(getCategorySchema, 'params'),
   async (req, res, next) => {
@@ -72,5 +73,6 @@ router.delete('/:id',
       next(error);
     }
 
-  });
+  }
+);
 module.exports = router;

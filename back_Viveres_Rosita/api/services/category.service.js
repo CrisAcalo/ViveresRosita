@@ -7,6 +7,10 @@ class CategoryService {
     this.Category = sequelize.models.Category;
   }
 
+  async create(body) {
+    return this.Category.create(body);
+  }
+
   async find() {
     return this.Category.findAll();
   }
@@ -21,10 +25,6 @@ class CategoryService {
       throw boom.notFound('Category not found');
     }
     return category;
-  }
-
-  async create(body) {
-    return this.Category.create(body);
   }
 
   async update(id, changes) {

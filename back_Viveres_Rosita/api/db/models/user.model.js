@@ -22,10 +22,24 @@ const UserSchema = {
     allowNull: false,
     type: DataTypes.STRING,
   },
-  role: {
+  phone: {
     allowNull: false,
     type: DataTypes.STRING,
-    defaultValue: 'customer',
+  },
+  address: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
+  rolId: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    field: 'rol_id',
+    references: {
+      model: 'roles', // Tabla que referencia
+      key: 'id',
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL',
   },
   createdAt: {
     allowNull: false,
@@ -33,10 +47,14 @@ const UserSchema = {
     field: 'created_at',
     defaultValue: Sequelize.fn('now'),
   },
-}
+};
+
 class User extends Model {
   static associate(models) {
-    //
+    this.belongsTo(models.Rol, {
+      as: 'rol',
+      foreignKey: 'rolId',
+    });
   }
 
   static config(sequelize) {
@@ -45,7 +63,7 @@ class User extends Model {
       tableName: USER_TABLE,
       modelName: 'User',
       timestamps: false,
-    }
+    };
   }
 }
 

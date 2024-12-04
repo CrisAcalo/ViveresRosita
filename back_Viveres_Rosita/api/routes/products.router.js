@@ -1,5 +1,4 @@
 const express = require('express');
-const { faker } = require('@faker-js/faker');
 
 const ProductsService = require('../services/product.service');
 const { createProductSchema, updateProductSchema, getProductSchema } = require('../schemas/product.schema');

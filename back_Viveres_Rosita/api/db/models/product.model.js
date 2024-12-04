@@ -18,13 +18,17 @@ const ProductSchema = {
     allowNull: false,
     type: DataTypes.STRING,
   },
-  price: {
-    allowNull: false,
-    type: DataTypes.INTEGER,
-  },
   description: {
     allowNull: false,
     type: DataTypes.STRING,
+  },
+  price: {
+    allowNull: false,
+    type: DataTypes.DECIMAL(10, 2),
+  },
+  stock: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
   },
   image: {
     allowNull: false,
@@ -51,7 +55,15 @@ const ProductSchema = {
 
 class Product extends Model {
   static associate(models) {
-    this.belongsTo(models.Category, { as: 'category' })
+    this.belongsTo(models.Category, {
+      as: 'category',
+      foreignKey: 'categoryId'
+    });
+
+    this.hasMany(models.OrderItem, {
+      as: 'orderItems',
+      foreignKey: 'productId'
+    });
   }
 
   static config(sequelize) {
