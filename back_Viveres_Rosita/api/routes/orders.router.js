@@ -6,10 +6,11 @@ const { createOrderSchema, getOrderSchema, createOrderItemSchema } = require('..
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-    const orders = await OrdersService.find();
-    res.json(orders);
-}
+router.get('/',
+    async (req, res) => {
+        const orders = await OrdersService.find();
+        res.json(orders);
+    }
 );
 
 router.get('/:id',

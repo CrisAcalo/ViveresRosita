@@ -8,7 +8,8 @@ const router = express.Router();
 // const ProductsService.= new ProductsServide(); //ya no es necesario porque usamos un singleton
 
 router.get('/', async (req, res) => {
-  const products = await ProductsService.find();
+  const categoryId = req.query.categoryId;
+  const products = await ProductsService.find(categoryId);
   res.json(products);
 });
 router.get('/:id',

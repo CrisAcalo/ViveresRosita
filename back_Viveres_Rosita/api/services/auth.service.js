@@ -39,7 +39,8 @@ class AuthService {
                 rol: user.rol
             },
             config.auth.tokenSecret,
-            { expiresIn: 60 * 60 });
+            // { expiresIn: 60 * 60 }
+        );
 
         return { token };
     }

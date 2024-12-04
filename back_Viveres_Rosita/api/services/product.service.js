@@ -11,9 +11,27 @@ class ProductService {
     return this.Product.create(body);
   }
 
-  async find() {
-    return this.Product.findAll();
+  async find(categoryId) {
+    if (categoryId && categoryId != 0) {
+      return this.Product.findAll({
+        where: {
+          categoryId
+        },
+        include: ['category']
+      });
+    }
+    return this.Product.findAll({
+      include: ['category']
+    });
   }
+
+  // async findByCategory(categoryId) {
+  //   return this.Product.findAll({
+  //     where: {
+  //       categoryId
+  //     }
+  //   });
+  // }
 
   async findOne(id) {
     const product = await this.Product.findByPk(id,
