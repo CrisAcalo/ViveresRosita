@@ -14,7 +14,7 @@ function routerApi(app) {
 
   router.use('/products', productsRouter);
   router.use('/categories', verifyToken, categoriesRouter);
-  router.use('/users', verifyToken, usersRouter);
+  router.use('/users', usersRouter);
   router.use('/roles', verifyToken, rolesRouter);
   router.use('/orders', ordersRouter);
   router.use('/auth', loginRouter);

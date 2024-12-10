@@ -13,6 +13,15 @@ router.get('/',
     }
 );
 
+router.get('/last', async (req, res, next) => {
+    try {
+        const order = await OrdersService.findLast();
+        res.status(200).json(order);
+    } catch (error) {
+        next(error);
+    }
+});
+
 router.get('/:id',
     validatorHandler(getOrderSchema, 'params'),
     async (req, res, next) => {

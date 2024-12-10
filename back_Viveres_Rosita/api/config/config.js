@@ -9,6 +9,9 @@ const config = {
   dbName: process.env.DB_NAME,
   dbPort: process.env.DB_PORT,
 
+  isProd: process.env.NODE_ENV === 'production',
+  dbUrl: process.env.DATABASE_URL,
+
   auth: {
     tokenSecret: process.env.TOKEN_SECRET,
     expiresIn: process.env.AUTH_EXPIRES_IN || 60 * 60,

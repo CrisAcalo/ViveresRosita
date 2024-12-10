@@ -36,6 +36,20 @@ class OrderService {
         return order;
     }
 
+    async findLast() {
+        return this.Order.findOne({
+            order: [['createdAt', 'DESC']],
+            include: [
+                {
+                    model: this.OrderItem,
+                    as: 'orderItems',
+                    include: ['product']
+                },
+                'user'
+            ]
+        });
+    }
+
     async delete(id) {
         const order = await this.findOne(id);
         await order.destroy();
