@@ -17,7 +17,7 @@ const options = {
   logging: config.isProd ? false : true,
 }
 
-if (IS_PROD) {
+if (IS_PROD === 'true') {
   URI = config.dbUrl;
   options.ssl = {
     rejectUnauthorized: false

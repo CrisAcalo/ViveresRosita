@@ -16,9 +16,6 @@ class AuthService {
             where: { email: body.email },
             include: ['rol']
         });
-
-        console.log(user.rol);
-
         if (!user) {
             throw boom.unauthorized('User not registered');
         }
