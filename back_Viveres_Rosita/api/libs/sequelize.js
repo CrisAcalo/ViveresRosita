@@ -10,7 +10,7 @@ const HOST = encodeURIComponent(config.dbHost);
 const DB_NAME = encodeURIComponent(config.dbName);
 const PORT = encodeURIComponent(config.dbPort);
 const IS_PROD = encodeURIComponent(config.isProd);
-const URI = '';
+let URI = '';
 
 const options = {
   dialect: 'postgres',
