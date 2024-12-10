@@ -42,6 +42,7 @@ function SignIn() {
                     <label className='flex flex-col gap-1'>
                         <span className='text-indigo-500 text-lg'>Email</span>
                         <input
+                            id='email'
                             value={email}
                             type='email'
                             className='border-2 border-indigo-500 rounded-lg p-2 focus:outline-0 shadow-md shadow-indigo-400/30'
@@ -51,6 +52,7 @@ function SignIn() {
                     <label className='flex flex-col gap-1'>
                         <span className='text-indigo-500 text-lg'>Password</span>
                         <input
+                            id='password'
                             value={password}
                             type='password'
                             className='border-2 border-indigo-500 rounded-lg p-2 focus:outline-0 shadow-md shadow-indigo-400/30'

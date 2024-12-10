@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocalStorage } from "../Hooks/useLocalStorage";
+import { config } from "../../config/config";
 
 const ShoppingCartContext = React.createContext();
 
@@ -27,7 +28,9 @@ const ShoppingCartProvider = ({ children }) => {
     //Shopping cart -Car Status
     const [carProducts, setCarProducts] = React.useState([]);
     //Product car - functions
-    const updateCartCounter = () => { setCartCounter(carProducts.length); };
+    const updateCartCounter = () => {
+        setCartCounter(carProducts.length);
+    };
 
     //Product Detail - estado del detalle del producto (open/closed)
     const [productDetailStatus, setproductDetailStatus] = React.useState(false);
@@ -54,6 +57,9 @@ const ShoppingCartProvider = ({ children }) => {
     //Checkout - Order
     const [order, setOrder] = React.useState([]);
 
+    //All Orders
+    const [orders, setOrders] = React.useState([]);
+
     //Status to search by title
     const [searchByTitle, setSearchByTitle] = React.useState('');
 
@@ -70,7 +76,7 @@ const ShoppingCartProvider = ({ children }) => {
 
     React.useEffect(() => {
         try {
-            fetch(`http://localhost:3000/api/v1/products?categoryId=${categoryId}`)
+            fetch(`${config.domain}/api/v1/products?categoryId=${categoryId}`)
                 .then((res) => res.json())
                 .then((data) => { setItems(data); });
         } catch (error) {
@@ -94,7 +100,7 @@ const ShoppingCartProvider = ({ children }) => {
 
     const logIn = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/v1/auth/login', {
+            const response = await fetch(`${config.domain}/api/v1/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -116,6 +122,7 @@ const ShoppingCartProvider = ({ children }) => {
         }
     }
 
+
     //Desencriptar el jsonwebtoken
     React.useEffect(() => {
         if (jsonWebToken) {
@@ -127,7 +134,7 @@ const ShoppingCartProvider = ({ children }) => {
     const [categories, setCategories] = React.useState([]);
     const getCategories = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/v1/categories', {
+            const response = await fetch(`${config.domain}/api/v1/categories`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -194,7 +201,9 @@ const ShoppingCartProvider = ({ children }) => {
             jsonWebToken,
             setJsonWebToken,
             categories,
-            getCategories
+            getCategories,
+            orders,
+            setOrders
         }}>
             {children}
         </ShoppingCartContext.Provider>

@@ -4,6 +4,30 @@ import OrdersCard from "../../Components/OrdersCard";
 import { ShoppingCartContext } from "../../Context";
 
 function MyOrders() {
+
+  React.useEffect(async () => {
+
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/orders/', {
+        headers: {
+          'auth-token': jsonWebToken
+        }
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setOrder(data);
+      } else {
+        setGlobalAlert({ type: 'error', messages: [data.message], duration: 4000 });
+      }
+    } catch (error) {
+      console.log(error);
+      setGlobalAlert({ type: 'error', messages: ['Error getting orders'], duration: 4000 });
+    }
+
+  }, []);
+
   const { order } = React.useContext(ShoppingCartContext);
   return (
     <div className="flex flex-col w-full items-center justify-center">
@@ -11,7 +35,7 @@ function MyOrders() {
         <h2 className="text-3xl font-bold text-indigo-500">My Orders</h2>
       </div>
       <div className="flex w-full justify-center gap-4 p-4 flex-wrap">
-        {
+        {order &&
           order.map((order) => (
             <Link key={order.id} to={`/my-order/${order.id}`}
               className="flex justify-center mb-3 bg-indigo-100/10

@@ -24,11 +24,11 @@ const ProductDetail = () => {
             <figure>
                 <img
                     className='object-cover w-full h-80'
-                    src={productToShow.images ? productToShow.images[0] : ''}
-                    alt={productToShow.title} />
+                    src={productToShow.image}
+                    alt={productToShow.name} />
                 <figcaption className='p-4'>
                     <p className='text-lg font-bold text-indigo-500'>${productToShow.price}</p>
-                    <h3 className='text-lg font-semibold'>{productToShow.title}</h3>
+                    <h3 className='text-lg font-semibold'>{productToShow.name}</h3>
                     <p className='text-sm font-light text-justify'>{productToShow.description}</p>
                 </figcaption>
             </figure>

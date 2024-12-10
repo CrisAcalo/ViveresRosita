@@ -34,9 +34,6 @@ const Navbar = () => {
         setJsonWebToken(null);
     }
 
-
-    
-
     return (
         <nav className='flex justify-between items-center fixed z-10 top-0 w-full py-5 px-8 font-light text-indigo-500 bg-white shadow-md'>
             <ul className="flex items-center gap-3 ">
@@ -94,7 +91,7 @@ const Navbar = () => {
                         <li className="text-gray-400 font-normal">
                             {auth.email}
                         </li>
-                        <li>
+                        {/* <li>
                             <NavLink
                                 to='/my-orders'
                                 className={({ isActive }) => (isActive ? activeStyle : undefined)}>
@@ -107,7 +104,7 @@ const Navbar = () => {
                                 className={({ isActive }) => (isActive ? activeStyle : undefined)}>
                                 My Account
                             </NavLink>
-                        </li>
+                        </li> */}
                         <li>
                             <NavLink
                                 to='/sign-in'

@@ -14,17 +14,49 @@ const CheckoutSideMenu = () => {
         carProducts,
         setCarProducts,
         order,
-        setOrder } = React.useContext(ShoppingCartContext);
+        setOrder,
+        setGlobalAlert,
+        jsonWebToken,
+        auth } = React.useContext(ShoppingCartContext);
+
+    const newOrder = async (order) => {
+        try {
+            const response = await fetch('http://localhost:3000/api/v1/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': jsonWebToken
+                },
+                body: JSON.stringify(order)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setGlobalAlert({ type: 'success', messages: ['Order added successfully'], duration: 4000 });
+
+            } else {
+                setGlobalAlert({ type: 'error', messages: [data.message], duration: 4000 });
+            }
+        } catch (error) {
+            console.log(error);
+            setGlobalAlert({ type: 'error', messages: ['Error creating order'], duration: 4000 });
+        }
+    }
 
     const handleCheckout = () => {
         const orderToAdd = {
-            id: uuidv4(),
-            date: new Date().toLocaleDateString(),
-            products: carProducts,
-            totalPrice: totalPrice(carProducts),
-            totalProducts: carProducts.length
+            userId: auth.user.id,
+            orderItems: [
+                ...carProducts.map(product => ({
+                    productId: product.id,
+                    quantity: 1
+                }))
+            ]
         }
-        setOrder([...order, orderToAdd]);
+        console.log(orderToAdd);
+        newOrder(orderToAdd);
+
         setCarProducts([]);
         closeCheckoutMenu();
     }

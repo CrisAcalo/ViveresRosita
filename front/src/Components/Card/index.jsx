@@ -32,6 +32,8 @@ const Card = (data) => {
     React.useEffect(() => {
         carProducts.find((product) => product.id === data.data.id)
             ? setIsProductInCart(true) : setIsProductInCart(false);
+
+        
     }, [carProducts]);
 
     return (

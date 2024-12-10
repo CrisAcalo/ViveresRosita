@@ -1,14 +1,65 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import OrderCard from "../../Components/OrderCard";
+import { totalPriceOrder } from "../../Utils";
 import { ShoppingCartContext } from "../../Context";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 
 function MyOrder() {
     const { id } = useParams();
 
-    const { order } = React.useContext(ShoppingCartContext);
-    const orderToShow = id ? order.filter(order => order.id === id)[0] : order.slice(-1)[0];
+    const { order, setOrder, setGlobalAlert, jsonWebToken } = React.useContext(ShoppingCartContext);
+
+    React.useEffect(() => {
+        if (id) {
+            getOrder(id);
+        } else {
+            getLastOrder();
+        }
+    }, []);
+
+    const getLastOrder = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/api/v1/orders/last', {
+                headers: {
+                    'auth-token': jsonWebToken
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setOrder(data);
+            } else {
+                setGlobalAlert({ type: 'error', messages: [data.message], duration: 4000 });
+            }
+        } catch (error) {
+            console.log(error);
+            setGlobalAlert({ type: 'error', messages: ['Error getting orders'], duration: 4000 });
+        }
+    }
+
+    const getOrder = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/v1/orders/${id}`, {
+                headers: {
+                    'auth-token': jsonWebToken
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setOrder(data);
+            } else {
+                setGlobalAlert({ type: 'error', messages: [data.message], duration: 4000 });
+            }
+        } catch (error) {
+            console.log(error);
+            setGlobalAlert({ type: 'error', messages: ['Error getting orders'], duration: 4000 });
+        }
+    }
+
     return (
         <>
             <div className="flex items-center w-80 gap-2 my-6">
@@ -21,34 +72,36 @@ function MyOrder() {
                 <div className="w-full">
                     <table className="w-full">
                         <thead className="text-xl text-indigo-500">
-                            <th colspan="2">Details</th>
+                            <tr>
+                                <th colSpan="2">Details</th>
+                            </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td className="font-bold text-indigo-500">ID:</td>
-                                <td className="font-light text-sm">{orderToShow.id}</td>
+                                <td className="font-light text-sm">{order.id}</td>
                             </tr>
                             <tr>
                                 <td className="font-bold text-indigo-500">Date:</td>
-                                <td>{orderToShow.date}</td>
+                                <td>{order.date}</td>
                             </tr>
                             <tr>
                                 <td className="font-bold text-indigo-500">Total Products:</td>
-                                <td>{orderToShow.totalProducts}</td>
+                                <td>{order.orderItems && order.orderItems.length}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div>
                     <h3 className="text-lg font-semibold text-indigo-500 my-3">Products</h3>
-                    {order.length > 0 &&
-                        orderToShow.products.map(product =>
+                    {order.orderItems && order.orderItems.length > 0 &&
+                        order.orderItems.map(item =>
                         (<OrderCard
-                            key={product.id}
-                            id={product.id}
-                            title={product.title}
-                            imgUrl={product.images[0]}
-                            price={product.price}
+                            key={item.id}
+                            id={item.id}
+                            title={item.product.name}
+                            imgUrl={item.product.image}
+                            price={item.product.price}
                             allowDelete={false}
                         />)
                         )
@@ -61,7 +114,7 @@ function MyOrder() {
                             Total Price:
                         </span>
                         <span className='font-bold text-xl'>
-                            ${orderToShow.totalPrice}
+                            ${order.orderItems && totalPriceOrder(order.orderItems)}
                         </span>
                     </p>
                 </div>
