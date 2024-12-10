@@ -11,6 +11,7 @@
     "migrations:run": "sequelize db:migrate",
     "migrations:revert": "sequelize db:migrate:undo",
     "migrations:clean": "sequelize db:migrate:undo:all",
+    "build": "migrations:run && start",
     "lint": "eslint"
   },
   "keywords": [],
