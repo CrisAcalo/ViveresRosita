@@ -22,12 +22,12 @@ const AppRoutes = () => {
       element: <RequireAuth />,
       children: [
         { path: '/', element: <Home /> },
-        { path: '/category/:catName', element: <Home /> },
-        { path: '/my-account', element: <MyAccount /> },
-        { path: '/my-order', element: <MyOrder /> },
-        { path: '/my-order/:id', element: <MyOrder /> },
-        { path: '/my-orders', element: <MyOrders /> },
-        { path: '/my-orders/last', element: <MyOrder /> },
+        // { path: '/category/:catName', element: <Home /> },
+        // { path: '/my-account', element: <MyAccount /> },
+        // { path: '/my-order', element: <MyOrder /> },
+        // { path: '/my-order/:id', element: <MyOrder /> },
+        // { path: '/my-orders', element: <MyOrders /> },
+        // { path: '/my-orders/last', element: <MyOrder /> },
       ]
     },
     {
