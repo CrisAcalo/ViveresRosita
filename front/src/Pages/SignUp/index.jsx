@@ -18,26 +18,11 @@ const SignUp = () => {
     const [rolId, setRolId] = React.useState(null);
     const navigate = useNavigate();
 
-    const onSignUp = () => {
-
+    const registerUser = async () => {
         if (password != confirmPassword) {
             setGlobalAlert({ type: 'error', messages: ['Passwords do not match'] })
-        } else {
-            registerUser();
-            setGlobalAlert({ type: 'success', messages: ['Sign In please :D'] })
-            navigate('/sign-in');
+            return;
         }
-
-    }
-
-    const registerUser = async () => {
-        console.log(name);
-        console.log(phone);
-        console.log(address);
-        console.log(email);
-        console.log(password);
-        console.log(confirmPassword);
-        console.log(rolId);
         try {
             const response = await fetch(`${config.domain}/api/v1/users`, {
                 method: 'POST',
@@ -52,10 +37,13 @@ const SignUp = () => {
 
             if (response.ok) {
                 setGlobalAlert({ type: 'success', messages: ['Register successful'], duration: 4000 });
+                navigate('/sign-in');
             } else {
+                // throw new Error(data.message);
                 setGlobalAlert({ type: 'error', messages: [data.message], duration: 4000 });
             }
         } catch (error) {
+            // throw new Error('Register failed');
             setGlobalAlert({ type: 'error', messages: ['Register failed'], duration: 4000 });
         }
     }
@@ -134,7 +122,7 @@ const SignUp = () => {
                     <button
                         type='button'
                         className='bg-indigo-500 text-white rounded-lg p-2'
-                        onClick={() => onSignUp()}>Sign Up</button>
+                        onClick={() => registerUser()}>Sign Up</button>
                 </form>
             </div>
 
