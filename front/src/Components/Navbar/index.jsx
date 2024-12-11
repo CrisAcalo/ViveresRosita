@@ -107,6 +107,7 @@ const Navbar = () => {
                         </li> */}
                         <li>
                             <NavLink
+                                id="logOutLink"
                                 to='/sign-in'
                                 className={({ isActive }) => (isActive ? activeStyle : undefined)}
                                 onClick={() => onLogOut()}>
