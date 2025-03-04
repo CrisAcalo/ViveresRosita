@@ -8,7 +8,9 @@ const Alerts = (props) => {
 
     return (
         <div className={`border-2 font-bold rounded-lg p-4 w-72 md:w-96 mb-4 ${styles[props.type]}`}>
-            {props.children}
+            {props.messages.map((message, index) => (
+                <p className="block" key={index}>{message}</p>
+            ))}
         </div>
     );
 }

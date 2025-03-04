@@ -21,11 +21,11 @@ const Layout = (props) => {
         <div className="flex flex-col items-center mt-20">
             {globalAlert && globalAlert.messages.length > 0 && showAlert &&
                 <Alerts type={globalAlert.type} messages={globalAlert.messages}>
-                    {
+                    {/* {
                         globalAlert.messages.map((message, index) => (
-                            <p key={index}>{message}</p>
+                            <p className="inline" key={index}>{message}</p>
                         ))
-                    }
+                    } */}
                 </Alerts>
             }
             {props.children}

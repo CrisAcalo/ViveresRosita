@@ -55,6 +55,10 @@ class User extends Model {
       as: 'rol',
       foreignKey: 'rolId',
     });
+    this.hasMany(models.Order, {
+      as: 'orders',
+      foreignKey: 'userId',
+    });
   }
 
   static config(sequelize) {

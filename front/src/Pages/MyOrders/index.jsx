@@ -5,6 +5,8 @@ import { ShoppingCartContext } from "../../Context";
 
 function MyOrders() {
 
+  const { jsonWebToken, setGlobalAlert, order, setOrder } = React.useContext(ShoppingCartContext);
+
   React.useEffect(async () => {
 
     try {
@@ -28,7 +30,6 @@ function MyOrders() {
 
   }, []);
 
-  const { order } = React.useContext(ShoppingCartContext);
   return (
     <div className="flex flex-col w-full items-center justify-center">
       <div className="my-4">

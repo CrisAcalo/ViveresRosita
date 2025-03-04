@@ -14,7 +14,7 @@ const config = {
 
   auth: {
     tokenSecret: process.env.TOKEN_SECRET,
-    expiresIn: process.env.AUTH_EXPIRES_IN || 60 * 60,
+    // expiresIn: process.env.AUTH_EXPIRES_IN || 60 * 60,
   },
 }
 

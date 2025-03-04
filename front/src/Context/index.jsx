@@ -1,6 +1,8 @@
 import React from "react";
 import { useLocalStorage } from "../Hooks/useLocalStorage";
 import { config } from "../../config/config";
+import { login } from "../api/authApi";
+import { getCategories as fetchCategories } from "../api/categoriesApi";
 
 const ShoppingCartContext = React.createContext();
 
@@ -98,30 +100,18 @@ const ShoppingCartProvider = ({ children }) => {
         }
     }, [items, searchByTitle]);
 
-    const logIn = async () => {
+    // Función para login
+    const logIn = async (email, password) => {
         try {
-            const response = await fetch(`${config.domain}/api/v1/auth/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setJsonWebToken(data.data.token);
-
-                setGlobalAlert({ type: 'success', messages: ['Login successful'], duration: 4000 });
-            } else {
-                setGlobalAlert({ type: 'error', messages: [data.message], duration: 4000 });
-            }
+            const data = await login({ email, password });
+            
+            setJsonWebToken(data.data.token);
+            setAuth({ isAuthenticated: true, user: data.data.user });
+            setGlobalAlert({ type: "success", messages: ["Login successful"], duration: 4000 });
         } catch (error) {
-            setGlobalAlert({ type: 'error', messages: ['Login failed'], duration: 4000 });
+            setGlobalAlert({ type: "error", messages: error, duration: 4000 });
         }
-    }
-
+    };
 
     //Desencriptar el jsonwebtoken
     React.useEffect(() => {
@@ -132,30 +122,24 @@ const ShoppingCartProvider = ({ children }) => {
     }, [jsonWebToken]);
 
     const [categories, setCategories] = React.useState([]);
+    // Cargar categorías desde API
     const getCategories = async () => {
         try {
-            const response = await fetch(`${config.domain}/api/v1/categories`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'auth-token': jsonWebToken
-                }
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setCategories(data);
-            } else {
-                setGlobalAlert({ type: 'error', messages: [data.message], duration: 4000 });
-            }
+            const data = await fetchCategories();
+            setCategories(data);
         } catch (error) {
-            setGlobalAlert({ type: 'error', messages: ['Error getting categories'], duration: 4000 });
+            setGlobalAlert({
+                type: "error",
+                messages: error,
+                duration: 4000
+            });
         }
-    }
+    };
 
     React.useEffect(() => {
-        getCategories();
+        if(jsonWebToken){
+            getCategories();
+        }
     }, []);
 
     return (

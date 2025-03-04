@@ -13,13 +13,6 @@ function Home() {
         categories } = React.useContext(ShoppingCartContext);
 
     const { catName } = useParams();
-    // const categories = {
-    //     clothes: 1,
-    //     electronics: 2,
-    //     furnitures: 3,
-    //     toys: 4,
-    //     others: 5
-    // }
     React.useEffect(() => {
         catName ?
             setCategoryId(categories[catName]) : setCategoryId(0);

@@ -39,7 +39,7 @@ class UserService {
   async findOne(id) {
     const user = await this.model.findByPk(id,
       {
-        include: ['rol']
+        include: ['rol', 'orders']
       }
     );
     if (!user) {
