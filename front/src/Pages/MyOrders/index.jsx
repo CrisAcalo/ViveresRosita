@@ -5,7 +5,7 @@ import { ShoppingCartContext } from "../../Context";
 import { getOrders } from "../../api/ordersApi"; // Importamos la API centralizada
 
 function MyOrders() {
-  const { jsonWebToken, setGlobalAlert } = useContext(ShoppingCartContext);
+  const { setGlobalAlert, auth } = useContext(ShoppingCartContext);
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
@@ -14,14 +14,16 @@ function MyOrders() {
 
   const fetchOrders = async () => {
     try {
-      const data = await getOrders(jsonWebToken);
+      let data = await getOrders();
+      data = data.filter((order) => order.user.id === auth.user.rol.id);
+
       if (data) {
         setOrders(data);
       } else {
         throw new Error("No se encontraron órdenes.");
       }
     } catch (error) {
-      setGlobalAlert({ type: "error", messages: [error.message], duration: 4000 });
+      setGlobalAlert({ type: "error", messages: error, duration: 4000 });
     }
   };
 

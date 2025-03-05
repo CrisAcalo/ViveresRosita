@@ -142,4 +142,39 @@ npm run dev
 Para obtener información detallada sobre los endpoints disponibles en la API, consulta la documentación ubicada en el directorio `back_Viveres_Rosita`.
 
 ## 📸 Capturas de pantalla
-_Agrega aquí capturas de pantalla de la aplicación funcionando._
+
+#### 🏠 Dashboard
+![Dashboard](https://i.ibb.co/kV28pJ6D/image.png)
+
+#### 📊 Gestión de Categorias
+![Categorias](https://i.ibb.co/HTGnbY97/image.png)
+
+#### 📂 Gestión de Productos
+![Productos](https://i.ibb.co/fzYF56TD/image.png)
+
+#### 📦 Gestión de Ordenes
+![Ordenes](https://i.ibb.co/Zp48y6S5/image.png)
+
+#### 📑 Gestión de Órdenes
+![Usuarios](https://i.ibb.co/5XKdZTJk/image.png)
+
+#### 👤 Pagina Principal
+![Pagina Principal](https://i.ibb.co/0V1v4Fbz/image.png)
+
+#### 🛒 Checkout
+![Checkout](https://i.ibb.co/v4481J9z/image.png)
+
+#### 📜 Historial de Órdenes del Usuario
+![Historial de Órdenes](https://i.ibb.co/mCh6jp54/image.png)
+
+#### 📄 Detalle de una Orden
+![Detalle de Orden](https://i.ibb.co/kgvLvK6r/image.png)
+
+#### 🔐 Listado de Órdenes
+![Ordenes](https://i.ibb.co/chnprCnP/image.png)
+
+#### 🔐 LogIn
+![LogIn](https://ibb.co/8DHTXfvQ)
+
+#### 🔐 SignUp
+![SignUp](https://ibb.co/C5x0LTPq)

@@ -1,136 +1,355 @@
-# Viveres Rosita API
+# Documentación de la API - E-commerce
 
-Esta API proporciona un conjunto de endpoints para gestionar productos, categorías, usuarios, roles, y órdenes en la aplicación Viveres Rosita.
+## Introducción
 
-## Endpoints
+Esta API proporciona funcionalidades para gestionar un e-commerce, permitiendo la administración de categorias, productos, usuarios, roles, pedidos y autenticación.
+
+## Base URL
+
+```
+/api/v1
+```
+
+## Rutas
 
 ### Autenticación
 
-- **POST /api/v1/auth/login**: Inicia sesión y obtiene un token de autenticación.
-    - Body:
-        - `email` (string, requerido): Correo electrónico del usuario.
-        - `password` (string, requerido): Contraseña del usuario.
+**POST /auth/login**
 
-### Productos
+- **Descripción**: Permite a los usuarios autenticarse en la aplicación.
+- **Parámetros en el body**:
+    
+    ```json
+    {
+      "email": "user@example.com",
+      "password": "password123"
+    }
+    
+    ```
+    
+- **Respuesta**:
+    
+    ```json
+    {
+      "error": null,
+      "data": {
+        "token": "JWT_TOKEN"
+      }
+    }
+    
+    ```
+    
 
-- **GET /api/v1/products**: Obtiene una lista de todos los productos.
-- **GET /api/v1/products/:id**: Obtiene los detalles de un producto específico.
-    - Params:
-        - `id` (string, requerido): ID del producto.
-- **POST /api/v1/products**: Crea un nuevo producto.
-    - Body:
-        - `name` (string, requerido): Nombre del producto.
-        - `description` (string, requerido): Descripción del producto.
-        - `price` (number, requerido): Precio del producto.
-        - `stock` (number, requerido): Stock del producto.
-        - `image` (string, requerido): URL de la imagen del producto.
-        - `categoryId` (number, requerido): ID de la categoría del producto.
-- **PATCH /api/v1/products/:id**: Actualiza un producto existente.
-    - Params:
-        - `id` (string, requerido): ID del producto.
-    - Body:
-        - `name` (string, opcional): Nombre del producto.
-        - `description` (string, opcional): Descripción del producto.
-        - `price` (number, opcional): Precio del producto.
-        - `stock` (number, opcional): Stock del producto.
-        - `image` (string, opcional): URL de la imagen del producto.
-        - `categoryId` (number, opcional): ID de la categoría del producto.
-- **DELETE /api/v1/products/:id**: Elimina un producto.
-    - Params:
-        - `id` (string, requerido): ID del producto.
+---
 
-### Categorías
+### Pedidos (Orders)
 
-- **GET /api/v1/categories**: Obtiene una lista de todas las categorías.
-- **GET /api/v1/categories/:id**: Obtiene los detalles de una categoría específica.
-    - Params:
-        - `id` (number, requerido): ID de la categoría.
-- **POST /api/v1/categories**: Crea una nueva categoría.
-    - Body:
-        - `name` (string, requerido): Nombre de la categoría.
-        - `image` (string, requerido): URL de la imagen de la categoría.
-        - `description` (string, requerido): Descripción de la categoría.
-- **PATCH /api/v1/categories/:id**: Actualiza una categoría existente.
-    - Params:
-        - `id` (number, requerido): ID de la categoría.
-    - Body:
-        - `name` (string, opcional): Nombre de la categoría.
-        - `image` (string, opcional): URL de la imagen de la categoría.
-        - `description` (string, opcional): Descripción de la categoría.
-- **DELETE /api/v1/categories/:id**: Elimina una categoría.
-    - Params:
-        - `id` (number, requerido): ID de la categoría.
+**GET /orders**
 
-### Usuarios
+- **Descripción**: Obtiene la lista de pedidos.
+- **Ejemplo de Respuesta**:
+    
+    ```
+    [
+    	{
+    		"id": 1,
+    		"userId": 2,
+    		"state": "Pendiente",
+    		"carrierId": 10,
+    		"createdAt": "2025-03-05T07:48:58.723Z",
+    		"orderItems": [
+    		...
+    		],
+    		"user": {
+    			"id": 2,
+    			"name": "Carlos Pérez",
+    			"email": "carlos.perez@example.com",
+    			"password": "admin123",
+    			"phone": "0987654321",
+    			"address": "Av. Los Rosales 123, Quito",
+    			"rolId": 3,
+    			"createdAt": "2025-03-05T07:48:58.710Z"
+    		},
+    		"carrier": {
+    			"id": 10,
+    			"name": "Mercado Libre Ecuador",
+    			"country": "Ecuador",
+    			"website": "https://mercadolibre.com.ec",
+    			"phone": "+593 556 667 778",
+    			"createdAt": "2025-03-05T07:48:58.705Z"
+    		}
+    	}]
+    ```
+    
 
-- **GET /api/v1/users**: Obtiene una lista de todos los usuarios.
-- **GET /api/v1/users/:id**: Obtiene los detalles de un usuario específico.
-    - Params:
-        - `id` (number, requerido): ID del usuario.
-- **POST /api/v1/users**: Crea un nuevo usuario.
-    - Body:
-        - `name` (string, requerido): Nombre del usuario.
-        - `email` (string, requerido): Correo electrónico del usuario.
-        - `password` (string, requerido): Contraseña del usuario.
-        - `phone` (string, requerido): Teléfono del usuario.
-        - `address` (string, requerido): Dirección del usuario.
-        - `rolId` (number, requerido): ID del rol del usuario.
-- **PATCH /api/v1/users/:id**: Actualiza un usuario existente.
-    - Params:
-        - `id` (number, requerido): ID del usuario.
-    - Body:
-        - `name` (string, opcional): Nombre del usuario.
-        - `email` (string, opcional): Correo electrónico del usuario.
-        - `password` (string, opcional): Contraseña del usuario.
-        - `phone` (string, opcional): Teléfono del usuario.
-        - `address` (string, opcional): Dirección del usuario.
-        - `rolId` (number, opcional): ID del rol del usuario.
-- **DELETE /api/v1/users/:id**: Elimina un usuario.
-    - Params:
-        - `id` (number, requerido): ID del usuario.
+**GET /orders/:id**
+
+- **Descripción**: Obtiene un pedido por su ID.
+
+**POST /orders**
+
+- **Descripción**: Crea un nuevo pedido.
+- **Ejemplo de Body**:
+    
+    ```
+    {
+      "userId": 3,
+      "orderItems": [
+        { "productId": 5, "quantity": 2 },
+        { "productId": 8, "quantity": 1 }
+      ]
+    }
+    ```
+    
+
+**DELETE /orders/:id**
+
+- **Descripción**: Elimina un pedido.
+
+---
 
 ### Roles
 
-- **GET /api/v1/roles**: Obtiene una lista de todos los roles.
-- **GET /api/v1/roles/:id**: Obtiene los detalles de un rol específico.
-    - Params:
-        - `id` (number, requerido): ID del rol.
-- **POST /api/v1/roles**: Crea un nuevo rol.
-    - Body:
-        - `name` (string, requerido): Nombre del rol.
-- **PATCH /api/v1/roles/:id**: Actualiza un rol existente.
-    - Params:
-        - `id` (number, requerido): ID del rol.
-    - Body:
-        - `name` (string, opcional): Nombre del rol.
-- **DELETE /api/v1/roles/:id**: Elimina un rol.
-    - Params:
-        - `id` (number, requerido): ID del rol.
+**GET /roles** *(Requiere autenticación)*
 
-### Órdenes
+- **Descripción**: Obtiene todos los roles.
+- **Ejemplo de Respuesta**:
+    
+    ```
+    [
+      { "id": 1, "name": "Admin" },
+      { "id": 2, "name": "Cliente" }
+    ]
+    ```
+    
 
-- **GET /api/v1/orders**: Obtiene una lista de todas las órdenes.
-- **GET /api/v1/orders/:id**: Obtiene los detalles de una orden específica.
-    - Params:
-        - `id` (number, requerido): ID de la orden.
-- **POST /api/v1/orders**: Crea una nueva orden.
-    - Body:
-        - `userId` (number, requerido): ID del usuario que realiza la orden.
-        - `orderItems` (array, requerido): Lista de productos en la orden.
-            - `productId` (number, requerido): ID del producto.
-            - `quantity` (number, requerido): Cantidad del producto.
-- **DELETE /api/v1/orders/:id**: Elimina una orden.
-    - Params:
-        - `id` (number, requerido): ID de la orden.
+**GET /roles/:id**
 
-## Middleware
+- **Descripción**: Obtiene un rol por su ID.
 
-- **verifyToken**: Middleware para verificar el token de autenticación en las rutas protegidas.
+**POST /roles**
 
-## Manejo de Errores
+- **Ejemplo de Body**:
+    
+    ```
+    {
+      "name": "Vendedor"
+    }
+    ```
+    
 
-- **404 Ruta no encontrada**: Se devuelve cuando una ruta no existe.
-- **405 Método no permitido**: Se devuelve cuando un método HTTP no está permitido en una ruta específica.
+**PATCH /roles/:id**
 
-## Ejemplos de Uso
+- **Ejemplo de Body**:
+    
+    ```
+    {
+      "name": "Gerente"
+    }
+    ```
+    
 
+**DELETE /roles/:id**
+
+- **Descripción**: Elimina un rol.
+
+### Productos
+
+**GET /products**
+
+- **Descripción**: Obtiene la lista de productos.
+- **Ejemplo de Respuesta**:
+    
+    ```json
+    [
+      {
+        "id": 1,
+        "name": "Producto 1",
+        "description": "Descripción del producto",
+        "price": 100,
+        "stock": 10,
+        "image": "https://ejemplo.com/imagen.jpg",
+        "categoryId": 2
+      }
+    ]
+    
+    ```
+    
+
+**GET /products/:id**
+
+- **Descripción**: Obtiene un producto por su ID.
+- **Ejemplo de Respuesta**:
+    
+    ```json
+    {
+      "name": "Producto 1",
+      "description": "Descripción del producto",
+      "price": 100,
+      "stock": 10,
+      "image": "https://ejemplo.com/imagen.jpg",
+      "categoryId": 2
+    }
+    
+    ```
+    
+
+**POST /products**
+
+- **Descripción**: Crea un nuevo producto.
+- **Parámetros en el body**:
+    
+    ```json
+    {
+      "name": "Nuevo Producto",
+      "description": "Descripción detallada",
+      "price": 199.99,
+      "stock": 50,
+      "image": "https://ejemplo.com/imagen.jpg",
+      "categoryId": 3
+    }
+    
+    ```
+    
+- **Ejemplo de Respuesta**:
+    
+    ```json
+    {
+      "message": "created",
+      "data": {
+        "id": 10,
+        "name": "Nuevo Producto",
+        "description": "Descripción detallada",
+        "price": 199.99,
+        "stock": 50,
+        "image": "https://ejemplo.com/imagen.jpg",
+        "categoryId": 3
+      }
+    }
+    
+    ```
+    
+
+**PATCH /products/:id**
+
+- **Descripción**: Actualiza los datos de un producto.
+- **Ejemplo de Body**:
+    
+    ```json
+    {
+      "price": 179.99,
+      "stock": 40
+    }
+    
+    ```
+    
+
+**DELETE /products/:id**
+
+- **Descripción**: Elimina un producto.
+- **Ejemplo de Respuesta**:
+    
+    ```json
+    {
+      "message": "deleted",
+      "id": 10
+    }
+    
+    ```
+    
+
+---
+
+### Categorías
+
+**GET /categories** *(Requiere autenticación)*
+
+- **Ejemplo de Respuesta**:
+    
+    ```json
+    [
+      {
+        "id": 1,
+        "name": "Electrónica",
+        "image": "https://ejemplo.com/electronica.jpg",
+        "description": "Artículos de tecnología"
+      }
+    ]
+    
+    ```
+    
+
+**POST /categories**
+
+- **Ejemplo de Body**:
+    
+    ```json
+    {
+      "name": "Hogar",
+      "image": "https://ejemplo.com/hogar.jpg",
+      "description": "Artículos para el hogar"
+    }
+    
+    ```
+    
+
+---
+
+### Usuarios
+
+**GET /users**
+
+- **Ejemplo de Respuesta**:
+    
+    ```json
+    [
+      {
+        "id": 1,
+        "name": "Juan Pérez",
+        "email": "juan@example.com",
+        "phone": "1234567890",
+        "address": "Calle Falsa 123",
+        "rolId": 2
+      }
+    ]
+    
+    ```
+    
+
+**POST /users**
+
+- **Ejemplo de Body**:
+    
+    ```json
+    {
+      "name": "Ana López",
+      "email": "ana@example.com",
+      "password": "securePass123",
+      "phone": "0987654321",
+      "address": "Av. Siempre Viva 742",
+      "rolId": 1
+    }
+    
+    ```
+    
+
+---
+
+### Códigos de Estado
+
+- `200 OK` - Operación exitosa
+- `201 Created` - Recurso creado exitosamente
+- `400 Bad Request` - Datos inválidos
+- `401 Unauthorized` - Falta autenticación
+- `403 Forbidden` - Acceso denegado
+- `404 Not Found` - Recurso no encontrado
+- `500 Internal Server Error` - Error en el servidor
+
+## Seguridad
+
+- Se requiere autenticación para acceder a ciertas rutas.
+- Se usa `jsonwebtoken` para la generación de tokens.
+
+## Contacto
+
+Para más información, contactar con el equipo de desarrollo.
