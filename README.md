@@ -117,23 +117,28 @@ npm run dev
 [
   {
     "name": "Carlos Pérez",
-    "email": "carlos.perez@example.com"
+    "email": "carlos.perez@example.com",
+    "password": "admin123"
   },
   {
     "name": "María González",
-    "email": "maria.gonzalez@example.com"
+    "email": "maria.gonzalez@example.com",
+    "password": "admin123"
   },
   {
     "name": "Javier López",
-    "email": "javier.lopez@example.com"
+    "email": "javier.lopez@example.com",
+    "password": "admin123"
   },
   {
     "name": "Sofía Ramírez",
-    "email": "sofia.ramirez@example.com"
+    "email": "sofia.ramirez@example.com",
+    "password": "admin123"
   },
   {
     "name": "Andrés Castillo",
-    "email": "andres.castillo@example.com"
+    "email": "andres.castillo@example.com",
+    "password": "admin123"
   }
 ]
 ```
