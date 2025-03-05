@@ -6,6 +6,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
 const { USER_TABLE } = require('./user.model');
+const { CARRIER_TABLE } = require('./carrier.model');
 
 const ORDER_TABLE = 'orders';
 
@@ -27,6 +28,22 @@ const OrderSchema = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
     },
+    state: {
+        allowNull: false,
+        type: DataTypes.ENUM('Pendiente', 'Enviado', 'Entregado', 'Cancelado'),
+        defaultValue: 'Pendiente',
+    },
+    carrierId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        field: 'carrier_id',
+        references: {
+            model: CARRIER_TABLE,
+            key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+    },
     createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
@@ -42,11 +59,14 @@ class Order extends Model {
             as: 'user',
             foreignKey: 'userId',
         });
-
-        // Relación con OrderItem
         this.hasMany(models.OrderItem, {
             as: 'orderItems',
             foreignKey: 'orderId',
+            onDelete: 'CASCADE',
+        });
+        this.belongsTo(models.Carrier, {
+            as: 'carrier',
+            foreignKey: 'carrierId',
         });
     }
 

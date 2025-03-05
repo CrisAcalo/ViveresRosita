@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { getCategories, createCategory, updateCategory, deleteCategory } from "../../../api/categoriesApi";
 import { useAdminUI } from "../../Context/AdminUIContext";
 import Table from "../../Components/Table";
 import Modal from "../../Components/Modal";
 import CategoryForm from "../../Components/Forms/CategoryForm";
+import { ShoppingCartContext } from "../../../Context";
 
 const Categories = () => {
-  const { modal, setModal, setGlobalAlert } = useAdminUI();
+  const { modal, setModal } = useAdminUI();
+  const { setGlobalAlert } = useContext(ShoppingCartContext);
   const [categories, setCategories] = useState([]);
 
   // Cargar categorías al iniciar
@@ -19,7 +21,7 @@ const Categories = () => {
       const data = await getCategories();
       setCategories(data);
     } catch (error) {
-      setGlobalAlert({ type: "error", messages: [error.message || "Error al obtener categorías"] });
+      setGlobalAlert({ type: "error", messages: error, duration: 4000 });
     }
   };
 
@@ -36,7 +38,7 @@ const Categories = () => {
       fetchCategories();
       setModal({ isOpen: false });
     } catch (error) {
-      setGlobalAlert({ type: "error", messages: [error.message || "Error al guardar la categoría"] });
+      setGlobalAlert({ type: "error", messages: error, duration: 4000 });
     }
   };
 
@@ -48,7 +50,7 @@ const Categories = () => {
         setGlobalAlert({ type: "success", messages: ["Categoría eliminada exitosamente"] });
         fetchCategories();
       } catch (error) {
-        setGlobalAlert({ type: "error", messages: [error.message || "Error al eliminar la categoría"] });
+        setGlobalAlert({ type: "error", messages: error, duration: 4000 });
       }
     }
   };

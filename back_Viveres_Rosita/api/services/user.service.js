@@ -32,7 +32,11 @@ class UserService {
   }
 
   async find() {
-    const rta = await this.model.findAll();
+    const rta = await this.model.findAll(
+      {
+        include: ['rol', 'orders']
+      }
+    );
     return rta;
   }
 

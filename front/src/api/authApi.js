@@ -1,3 +1,5 @@
+import React from "react";
+import { ShoppingCartContext } from "../Context";
 import api from "./axiosConfig";
 
 /**
@@ -30,11 +32,4 @@ export const registerUser = async (userData) => {
     errorMessages.push(error.response?.data?.message);
     throw errorMessages || "Error al registrar usuario";
   }
-};
-
-/**
- * Cierra sesión eliminando el token del almacenamiento local.
- */
-export const logout = () => {
-  localStorage.removeItem("jsonWebToken");
 };

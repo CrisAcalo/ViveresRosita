@@ -3,6 +3,7 @@ import { useLocalStorage } from "../Hooks/useLocalStorage";
 import { config } from "../../config/config";
 import { login } from "../api/authApi";
 import { getCategories as fetchCategories } from "../api/categoriesApi";
+import { getProductsByCategory } from "../api/productsApi";
 
 const ShoppingCartContext = React.createContext();
 
@@ -77,19 +78,6 @@ const ShoppingCartProvider = ({ children }) => {
     const [openModal, setOpenModal] = React.useState(false);
 
     React.useEffect(() => {
-        try {
-            fetch(`${config.domain}/api/v1/products?categoryId=${categoryId}`)
-                .then((res) => res.json())
-                .then((data) => { setItems(data); });
-        } catch (error) {
-            console.log('Error:', error);
-        }
-        return () => {
-            setSearchByTitle('');
-        }
-    }, [categoryId]);
-
-    React.useEffect(() => {
         if (items && searchByTitle) {
             const filteredItems = items.filter(
                 (item) =>
@@ -104,22 +92,16 @@ const ShoppingCartProvider = ({ children }) => {
     const logIn = async (email, password) => {
         try {
             const data = await login({ email, password });
-            
+
             setJsonWebToken(data.data.token);
-            setAuth({ isAuthenticated: true, user: data.data.user });
+            const payload = JSON.parse(atob(data.data.token.split('.')[1]));
+            setAuth({ isAuthenticated: true, user: payload });
+            // setAuth({ isAuthenticated: true, user: data.data.user });
             setGlobalAlert({ type: "success", messages: ["Login successful"], duration: 4000 });
         } catch (error) {
             setGlobalAlert({ type: "error", messages: error, duration: 4000 });
         }
     };
-
-    //Desencriptar el jsonwebtoken
-    React.useEffect(() => {
-        if (jsonWebToken) {
-            const payload = JSON.parse(atob(jsonWebToken.split('.')[1]));
-            setAuth({ isAuthenticated: true, user: payload });
-        }
-    }, [jsonWebToken]);
 
     const [categories, setCategories] = React.useState([]);
     // Cargar categorías desde API
@@ -137,7 +119,7 @@ const ShoppingCartProvider = ({ children }) => {
     };
 
     React.useEffect(() => {
-        if(jsonWebToken){
+        if (jsonWebToken) {
             getCategories();
         }
     }, []);

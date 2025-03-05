@@ -16,6 +16,25 @@ export const getProducts = async () => {
 };
 
 /**
+ * Obtiene un producto específico por su categoryId.
+ * @param {number} id - ID dela categoria.
+ * @returns {Promise<Array>} Lista de productos.
+ */
+
+export const getProductsByCategory = async (id) => {
+    try {
+        const response = await api.get(`/api/v1/products?categoryId=${id}`);
+        return response.data;
+    } catch (error) {
+        let errorMessages = ["Error al obtener productos"];
+        errorMessages.push(error.response?.data?.message);
+        throw errorMessages || "Error al obtener productos";
+    }
+}
+
+
+
+/**
  * Obtiene un producto específico por su ID.
  * @param {number} id - ID del producto a obtener.
  * @returns {Promise<Object>} Datos del producto.

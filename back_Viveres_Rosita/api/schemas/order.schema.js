@@ -23,10 +23,8 @@ const getOrderSchema = Joi.object({
 });
 
 
-// const createOrderItemSchema = Joi.object({
-//     orderId: orderId.required(),
-//     productId: productId.required(),
-//     quantity: quantity.required(),
-// });
+const updateStateSchema = Joi.object({
+    state: Joi.string().valid('Pendiente', 'Enviado', 'Entregado', 'Cancelado').required(),
+});
 
-module.exports = { createOrderSchema, getOrderSchema };
+module.exports = { createOrderSchema, getOrderSchema, updateStateSchema };

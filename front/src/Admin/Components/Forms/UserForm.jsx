@@ -45,11 +45,13 @@ const UserForm = ({ onSave, user, roles }) => {
                 <span className="text-gray-700">Rol</span>
                 <select className="border rounded-lg px-3 py-2" value={rolId} onChange={(e) => setRolId(e.target.value)} required>
                     <option value="">Seleccione un rol</option>
-                    {roles.map((rol) => (
+                    {/* {roles.map((rol) => (
                         <option key={rol.id} value={rol.id}>
                             {rol.name}
                         </option>
-                    ))}
+                    ))} */}
+                    <option value="1">Admin</option>
+                    <option value="3">Customer</option>
                 </select>
             </label>
 

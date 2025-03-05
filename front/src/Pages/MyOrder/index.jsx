@@ -4,61 +4,38 @@ import OrderCard from "../../Components/OrderCard";
 import { totalPriceOrder } from "../../Utils";
 import { ShoppingCartContext } from "../../Context";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
+import { getOrderById, getLastOrder } from "../../api/ordersApi"; // Importamos la API centralizada
 
 function MyOrder() {
     const { id } = useParams();
-
     const { order, setOrder, setGlobalAlert, jsonWebToken } = React.useContext(ShoppingCartContext);
+    const [showCarrierInfo, setShowCarrierInfo] = React.useState(false);
 
     React.useEffect(() => {
         if (id) {
-            getOrder(id);
+            fetchOrder(id);
         } else {
-            getLastOrder();
+            fetchLastOrder();
         }
     }, []);
 
-    const getLastOrder = async () => {
+    const fetchLastOrder = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/v1/orders/last', {
-                headers: {
-                    'auth-token': jsonWebToken
-                }
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setOrder(data);
-            } else {
-                setGlobalAlert({ type: 'error', messages: [data.message], duration: 4000 });
-            }
+            const data = await getLastOrder(jsonWebToken);
+            setOrder(data);
         } catch (error) {
-            console.log(error);
-            setGlobalAlert({ type: 'error', messages: ['Error getting orders'], duration: 4000 });
+            setGlobalAlert({ type: "error", messages: [error.message], duration: 4000 });
         }
-    }
+    };
 
-    const getOrder = async (id) => {
+    const fetchOrder = async (id) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/v1/orders/${id}`, {
-                headers: {
-                    'auth-token': jsonWebToken
-                }
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setOrder(data);
-            } else {
-                setGlobalAlert({ type: 'error', messages: [data.message], duration: 4000 });
-            }
+            const data = await getOrderById(id, jsonWebToken);
+            setOrder(data);
         } catch (error) {
-            console.log(error);
-            setGlobalAlert({ type: 'error', messages: ['Error getting orders'], duration: 4000 });
+            setGlobalAlert({ type: "error", messages: [error.message], duration: 4000 });
         }
-    }
+    };
 
     return (
         <>
@@ -68,7 +45,7 @@ function MyOrder() {
                 </Link>
                 <h1 className="text-lg font-semibold">My Orders</h1>
             </div>
-            <div className='flex flex-col w-80 border-2 border-indigo-500 rounded-lg px-4 py-2 shadow-lg shadow-indigo-200'>
+            <div className='flex flex-col w-80 sm:w-1/2 lg:w-2/5 xl:w-1/3 border-2 border-indigo-500 rounded-lg px-4 py-2 shadow-lg shadow-indigo-200'>
                 <div className="w-full">
                     <table className="w-full">
                         <thead className="text-xl text-indigo-500">
@@ -83,11 +60,43 @@ function MyOrder() {
                             </tr>
                             <tr>
                                 <td className="font-bold text-indigo-500">Date:</td>
-                                <td>{order.date}</td>
+                                <td>{order.createdAt ? new Date(order.createdAt).toLocaleDateString() : "N/A"}</td>
                             </tr>
                             <tr>
                                 <td className="font-bold text-indigo-500">Total Products:</td>
-                                <td>{order.orderItems && order.orderItems.length}</td>
+                                <td>{order.orderItems?.length || 0}</td>
+                            </tr>
+                            <tr>
+                                <td className="font-bold text-indigo-500">State:</td>
+                                <td className={`font-bold ${order.state === "Cancelado" ? "text-red-500" : "text-green-500"}`}>
+                                    {order.state || "N/A"}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="font-bold text-indigo-500">Carrier:</td>
+                                <td>
+                                    {order.carrier ? (
+                                        <span href={order.carrier.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 cursor-pointer underline relative"
+
+                                            onMouseEnter={() => setShowCarrierInfo(true)}
+                                            onMouseLeave={() => setShowCarrierInfo(false)}>
+                                            {order.carrier.name}
+                                            {showCarrierInfo && (
+                                                <div className="absolute left-0 top-[19px] w-64 bg-white p-3 border rounded-lg shadow-lg z-50"
+                                                    onMouseEnter={() => setShowCarrierInfo(true)}
+                                                    onMouseLeave={() => setShowCarrierInfo(false)}
+                                                >
+                                                    <h4 className="text-lg font-bold">{order.carrier.name}</h4>
+                                                    <p><strong>País:</strong> {order.carrier.country}</p>
+                                                    <p><strong>Teléfono:</strong> {order.carrier.phone}</p>
+                                                    <p><strong>Sitio web:</strong> <a href={order.carrier.website} target="_blank" rel="noopener noreferrer" className="text-indigo-500 underline">Ver más</a></p>
+                                                </div>
+                                            )}
+                                        </span>
+                                    ) : (
+                                        "No asignado"
+                                    )}
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -118,10 +127,9 @@ function MyOrder() {
                         </span>
                     </p>
                 </div>
-
             </div>
         </>
-    )
+    );
 }
 
-export default MyOrder
+export default MyOrder;

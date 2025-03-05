@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { getUsers, createUser, updateUser, deleteUser } from "../../../api/usersApi";
 import { getRoles } from "../../../api/rolesApi";
 import { useAdminUI } from "../../Context/AdminUIContext";
 import Table from "../../Components/Table";
 import Modal from "../../Components/Modal";
 import UserForm from "../../Components/Forms/UserForm";
+import { ShoppingCartContext } from "../../../Context";
 
 const Users = () => {
-    const { modal, setModal, setGlobalAlert } = useAdminUI();
+    const { modal, setModal } = useAdminUI();
+    const { setGlobalAlert } = useContext(ShoppingCartContext);
     const [users, setUsers] = useState([]);
     const [roles, setRoles] = useState([]);
 
@@ -22,7 +24,7 @@ const Users = () => {
             const data = await getUsers();
             setUsers(data);
         } catch (error) {
-            setGlobalAlert({ type: "error", messages: [error.message || "Error al obtener usuarios"] });
+            setGlobalAlert({ type: "error", messages: error, duration: 4000 });
         }
     };
 
@@ -31,7 +33,7 @@ const Users = () => {
             const data = await getRoles();
             setRoles(data);
         } catch (error) {
-            setGlobalAlert({ type: "error", messages: [error.message || "Error al obtener roles"] });
+            setGlobalAlert({ type: "error", messages: error, duration: 4000 });
         }
     };
 
@@ -48,7 +50,7 @@ const Users = () => {
             fetchUsers();
             setModal({ isOpen: false });
         } catch (error) {
-            setGlobalAlert({ type: "error", messages: [error.message || "Error al guardar el usuario"] });
+            setGlobalAlert({ type: "error", messages: error, duration: 4000 });
         }
     };
 
@@ -60,7 +62,7 @@ const Users = () => {
                 setGlobalAlert({ type: "success", messages: ["Usuario eliminado exitosamente"] });
                 fetchUsers();
             } catch (error) {
-                setGlobalAlert({ type: "error", messages: [error.message || "Error al eliminar el usuario"] });
+                setGlobalAlert({ type: "error", messages: error, duration: 4000 });
             }
         }
     };
@@ -78,30 +80,33 @@ const Users = () => {
             </button>
 
             {/* Tabla de Usuarios */}
-            <Table
-                headers={["Nombre", "Email", "Teléfono", "Dirección", "Rol", "Acciones"]}
-                data={users.map((user) => [
-                    user.name,
-                    user.email,
-                    user.phone,
-                    user.address,
-                    user.rol?.name || "Desconocido",
-                    <div key={user.id} className="flex gap-2">
-                        <button
-                            className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
-                            onClick={() => setModal({ isOpen: true, type: "edit", data: user })}
-                        >
-                            Editar
-                        </button>
-                        <button
-                            className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                            onClick={() => handleDeleteUser(user.id)}
-                        >
-                            Eliminar
-                        </button>
-                    </div>,
-                ])}
-            />
+            <div>
+                <Table
+                    headers={["Nombre", "Email", "Teléfono", "Dirección", "Rol", "Acciones"]}
+                    data={users.map((user) => [
+                        user.name,
+                        user.email,
+                        user.phone,
+                        user.address,
+                        user.rol?.name || "Desconocido",
+                        <div key={user.id} className="flex gap-2">
+                            <button
+                                className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                                onClick={() => setModal({ isOpen: true, type: "edit", data: user })}
+                            >
+                                Editar
+                            </button>
+                            <button
+                                className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                                onClick={() => handleDeleteUser(user.id)}
+                            >
+                                Eliminar
+                            </button>
+                        </div>,
+                    ])}
+                />
+            </div>
+
 
             {/* Modal de Crear/Editar Usuario */}
             {modal.isOpen && (

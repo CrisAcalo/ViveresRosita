@@ -3,17 +3,31 @@ import { useAdminUI } from "../../Context/AdminUIContext";
 import { useContext } from "react";
 import { ShoppingCartContext } from "../../../Context/";
 import { useNavigate } from "react-router-dom";
-import { Bars3Icon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid";
+import { Bars3Icon, ArrowRightOnRectangleIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
 const DashboardHeader = () => {
   const { setIsSidebarOpen } = useAdminUI();
-  const { auth, setAuth } = useContext(ShoppingCartContext);
   const navigate = useNavigate();
 
+  const { auth,
+    setAuth,
+    setCarProducts,
+    closeProductDetail,
+    closeCheckoutMenu,
+    setOrder,
+    setJsonWebToken,
+  } = React.useContext(ShoppingCartContext);
+
   const handleLogout = () => {
-    localStorage.removeItem("jsonWebToken");
-    setAuth({ isAuthenticated: false, user: null });
-    navigate("/sign-in");
+    setAuth({});
+    setCarProducts([]);
+    setOrder({});
+    closeProductDetail();
+    closeCheckoutMenu();
+    setJsonWebToken(null);
+    
+    localStorage.removeItem('jsonWebToken');
+    localStorage.removeItem('auth');
   };
 
   return (
@@ -23,16 +37,27 @@ const DashboardHeader = () => {
         <Bars3Icon className="w-6 h-6" />
       </button>
 
-      {/* Título de la página (puedes hacer dinámico si lo deseas) */}
+      {/* Título de la página (dinámico si se desea) */}
       <h1 className="text-xl font-semibold text-indigo-600">Dashboard</h1>
 
-      {/* Usuario y botón de logout */}
+      {/* Contenedor de Usuario y Logout */}
       <div className="flex items-center gap-4">
-        <span className="text-gray-700">Bienvenido, <strong>{auth?.user?.name || "Admin"}</strong></span>
+        {/* En pantallas grandes, muestra el nombre del usuario */}
+        <div className="hidden md:flex items-center gap-2">
+          <UserCircleIcon className="w-6 h-6 text-gray-500" />
+          <span className="text-gray-700">Bienvenido, <strong>{auth?.user?.name || "Admin"}</strong></span>
+        </div>
+
+        {/* En pantallas pequeñas, solo muestra el icono del usuario */}
+        <div className="md:hidden">
+          <UserCircleIcon className="w-6 h-6 text-gray-500" />
+        </div>
+
+        {/* Botón de Logout */}
         <button className="bg-indigo-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-600 transition"
           onClick={handleLogout}>
           <ArrowRightOnRectangleIcon className="w-5 h-5" />
-          Logout
+          <span className="hidden md:inline">Logout</span> {/* Oculta texto en móviles */}
         </button>
       </div>
     </header>

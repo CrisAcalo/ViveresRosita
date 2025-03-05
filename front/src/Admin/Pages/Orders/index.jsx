@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { getOrders, getOrderById, createOrder, deleteOrder } from "../../../api/ordersApi";
+import React, { useEffect, useState, useContext } from "react";
+import { getOrders, getOrderById, createOrder, deleteOrder, updateOrderStatus } from "../../../api/ordersApi";
 import { getUsers } from "../../../api/usersApi";
 import { getProducts } from "../../../api/productsApi";
 import { useAdminUI } from "../../Context/AdminUIContext";
@@ -7,9 +7,11 @@ import Table from "../../Components/Table";
 import Modal from "../../Components/Modal";
 import OrderForm from "../../Components/Forms/OrderForm";
 import OrderDetail from "../../Components/OrderDetail";
+import { ShoppingCartContext } from "../../../Context";
 
 const Orders = () => {
-    const { modal, setModal, setGlobalAlert } = useAdminUI();
+    const { modal, setModal } = useAdminUI();
+    const { setGlobalAlert } = useContext(ShoppingCartContext);
     const [orders, setOrders] = useState([]);
     const [users, setUsers] = useState([]);
     const [products, setProducts] = useState([]);
@@ -21,12 +23,22 @@ const Orders = () => {
         fetchProducts();
     }, []);
 
+    const handleUpdateState = async (id, state) => {
+        try {
+            await updateOrderStatus(id, state);
+            setGlobalAlert({ type: "success", messages: [`Estado cambiado a ${state}`] });
+            fetchOrders();
+        } catch (error) {
+            setGlobalAlert({ type: "error", messages: error });
+        }
+    }
+
     const fetchOrders = async () => {
         try {
             const data = await getOrders();
             setOrders(data);
         } catch (error) {
-            setGlobalAlert({ type: "error", messages: [error.message || "Error al obtener órdenes"] });
+            setGlobalAlert({ type: "error", messages: error, duration: 4000 });
         }
     };
 
@@ -35,7 +47,7 @@ const Orders = () => {
             const data = await getUsers();
             setUsers(data);
         } catch (error) {
-            setGlobalAlert({ type: "error", messages: [error.message || "Error al obtener usuarios"] });
+            setGlobalAlert({ type: "error", messages: error, duration: 4000 });
         }
     };
 
@@ -44,7 +56,7 @@ const Orders = () => {
             const data = await getProducts();
             setProducts(data);
         } catch (error) {
-            setGlobalAlert({ type: "error", messages: [error.message || "Error al obtener productos"] });
+            setGlobalAlert({ type: "error", messages: error, duration: 4000 });
         }
     };
 
@@ -56,7 +68,7 @@ const Orders = () => {
             fetchOrders();
             setModal({ isOpen: false });
         } catch (error) {
-            setGlobalAlert({ type: "error", messages: [error.message || "Error al guardar la orden"] });
+            setGlobalAlert({ type: "error", messages: error, duration: 4000 });
         }
     };
 
@@ -68,7 +80,7 @@ const Orders = () => {
                 setGlobalAlert({ type: "success", messages: ["Orden eliminada exitosamente"] });
                 fetchOrders();
             } catch (error) {
-                setGlobalAlert({ type: "error", messages: [error.message || "Error al eliminar la orden"] });
+                setGlobalAlert({ type: "error", messages: error, duration: 4000 });
             }
         }
     };
@@ -79,7 +91,7 @@ const Orders = () => {
             const order = await getOrderById(id);
             setModal({ isOpen: true, type: "view", data: order });
         } catch (error) {
-            setGlobalAlert({ type: "error", messages: [error.message || "Error al obtener detalles de la orden"] });
+            setGlobalAlert({ type: "error", messages: error, duration: 4000 });
         }
     };
 
@@ -97,11 +109,13 @@ const Orders = () => {
 
             {/* Tabla de Órdenes */}
             <Table
-                headers={["ID", "Usuario", "Fecha", "Acciones"]}
+                headers={["ID", "Usuario", "Fecha", "Transportista", "Estado", "Acciones"]}
                 data={orders.map((order) => [
                     order.id,
                     order.user?.name || "Desconocido",
                     new Date(order.createdAt).toLocaleDateString(),
+                    order.carrier?.name || "Desconocido",
+                    order.state,
                     <div key={order.id} className="flex gap-2">
                         <button
                             className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
@@ -129,7 +143,7 @@ const Orders = () => {
             {/* Modal de Ver Detalles de la Orden */}
             {modal.isOpen && modal.type === "view" && (
                 <Modal title="Detalles de la Orden" onClose={() => setModal({ isOpen: false })}>
-                    <OrderDetail order={modal.data} />
+                    <OrderDetail onUpdate={handleUpdateState} order={modal.data} />
                 </Modal>
             )}
         </div>

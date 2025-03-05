@@ -16,7 +16,7 @@ const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [rolId, setRolId] = useState(null);
+    const [rolId, setRolId] = useState(3);
 
     const handleRegister = async () => {
         if (password !== confirmPassword) {
@@ -67,7 +67,7 @@ const SignUp = () => {
                             className='border-2 border-indigo-500 rounded-lg p-2 focus:outline-0 shadow-md shadow-indigo-400/30'
                             onInput={(e) => setAddress(e.target.value)} />
                     </label>
-                    <div className='grid md:grid-cols-2 gap-2'>
+                    <div className='grid md:grid-cols-1 gap-2'>
                         <label id='email-label' className='flex flex-col gap-1'>
                             <span className='text-indigo-500 text-lg'>Email</span>
                             <input
@@ -77,7 +77,7 @@ const SignUp = () => {
                                 className='border-2 border-indigo-500 rounded-lg p-2 focus:outline-0 shadow-md shadow-indigo-400/30'
                                 onInput={(e) => setEmail(e.target.value)} />
                         </label>
-                        <div className='flex flex-col gap-1'>
+                        {/* <div className='flex flex-col gap-1'>
                             <span className='text-indigo-500 text-lg'>Are you a ...?</span>
                             <ul id='role-radio-group' className="items-center w-full text-sm font-medium text-indigo-900 bg-white border-2 border-indigo-500 rounded-lg sm:flex">
 
@@ -95,7 +95,7 @@ const SignUp = () => {
                                 </li>
                             </ul>
 
-                        </div>
+                        </div> */}
                     </div>
                     <div className='grid md:grid-cols-2 gap-2'>
                         <label id='password-label' className='flex flex-col gap-1'>

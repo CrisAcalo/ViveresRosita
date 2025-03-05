@@ -14,13 +14,27 @@ import CheckoutSideMenu from '../../Components/CheckSideMenu';
 import RequireAuth from '../../Components/RequireAuth';
 import NotAuth from '../../Components/NotAuth';
 import AdminRoutes from '../../Admin/Routes/AdminRoutes';
+import AdminLayout from '../../Admin/';
+import Dashboard from '../../Admin/Pages/Dashboard';
+import Categories from '../../Admin/Pages/Categories';
+import Products from '../../Admin/Pages/Products';
+import Orders from '../../Admin/Pages/Orders';
+import Users from '../../Admin/Pages/Users';
 import './App.css';
 
 const AppRoutes = () => {
   let routes = useRoutes([
     {
       path: '/',
-      element: <RequireAuth />,
+      element: (
+        <>
+          <Navbar />
+          <Layout>
+            <RequireAuth />
+          </Layout>
+          <CheckoutSideMenu />
+        </>
+      ),
       children: [
         { path: '/', element: <Home /> },
         { path: '/category/:catName', element: <Home /> },
@@ -28,12 +42,20 @@ const AppRoutes = () => {
         { path: '/my-order', element: <MyOrder /> },
         { path: '/my-order/:id', element: <MyOrder /> },
         { path: '/my-orders', element: <MyOrders /> },
-        { path: '/my-orders/last', element: <MyOrder /> },
+        { path: '/my-order/last', element: <MyOrder /> },
       ]
     },
     {
       path: '/',
-      element: <NotAuth />,
+      element: (
+        <>
+          <Navbar />
+          <Layout>
+            <NotAuth />
+          </Layout>
+          <CheckoutSideMenu />
+        </>
+      ),
       children: [
         { path: '/sign-in', element: <SignIn /> },
         { path: '/sign-up', element: <SignUp /> },
@@ -41,25 +63,30 @@ const AppRoutes = () => {
     },
     {
       path: '/admin/*',
-      element: <AdminRoutes />
+      element: <AdminLayout />,
+      children: [
+        { path: "", element: <Dashboard /> },
+        { path: "categories", element: <Categories /> },
+        { path: "products", element: <Products /> },
+        { path: "orders", element: <Orders /> },
+        { path: "users", element: <Users /> },
+      ]
     },
     { path: '/*', element: <NotFound /> },
   ]);
   return routes;
-}
+};
+
 
 const App = () => {
   return (
     <ShoppingCartProvider>
       <BrowserRouter>
-        <Navbar></Navbar>
-        <Layout>
-          <AppRoutes />
-        </Layout>
-        <CheckoutSideMenu />
+        <AppRoutes />
       </BrowserRouter>
     </ShoppingCartProvider>
-  )
-}
+  );
+};
 
-export default App
+export default App;
+

@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { getProducts, createProduct, updateProduct, deleteProduct } from "../../../api/productsApi";
 import { getCategories } from "../../../api/categoriesApi";
 import { useAdminUI } from "../../Context/AdminUIContext";
 import Table from "../../Components/Table";
 import Modal from "../../Components/Modal";
 import ProductForm from "../../Components/Forms/ProductForm";
+import { ShoppingCartContext } from "../../../Context";
 
 const Products = () => {
-    const { modal, setModal, setGlobalAlert } = useAdminUI();
+    const { modal, setModal } = useAdminUI();
+    const { setGlobalAlert } = useContext(ShoppingCartContext);
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
 
@@ -22,7 +24,7 @@ const Products = () => {
             const data = await getProducts();
             setProducts(data);
         } catch (error) {
-            setGlobalAlert({ type: "error", messages: [error.message || "Error al obtener productos"] });
+            setGlobalAlert({ type: "error", messages: error, duration: 4000 });
         }
     };
 
@@ -31,7 +33,7 @@ const Products = () => {
             const data = await getCategories();
             setCategories(data);
         } catch (error) {
-            setGlobalAlert({ type: "error", messages: [error.message || "Error al obtener categorías"] });
+            setGlobalAlert({ type: "error", messages: error, duration: 4000 });
         }
     };
 
@@ -48,7 +50,7 @@ const Products = () => {
             fetchProducts();
             setModal({ isOpen: false });
         } catch (error) {
-            setGlobalAlert({ type: "error", messages: [error.message || "Error al guardar el producto"] });
+            setGlobalAlert({ type: "error", messages: error, duration: 4000 });
         }
     };
 
@@ -60,7 +62,7 @@ const Products = () => {
                 setGlobalAlert({ type: "success", messages: ["Producto eliminado exitosamente"] });
                 fetchProducts();
             } catch (error) {
-                setGlobalAlert({ type: "error", messages: [error.message || "Error al eliminar el producto"] });
+                setGlobalAlert({ type: "error", messages: error, duration: 4000 });
             }
         }
     };
@@ -79,8 +81,9 @@ const Products = () => {
 
             {/* Tabla de Productos */}
             <Table
-                headers={["Imagen", "Nombre", "Descripción", "Precio", "Stock", "Categoría", "Acciones"]}
+                headers={["ID", "Imagen", "Nombre", "Descripción", "Precio", "Stock", "Categoría", "Acciones"]}
                 data={products.map((product) => [
+                    product.id,
                     <img src={product.image} alt={product.name} className="w-12 h-12 rounded-md object-cover" />,
                     product.name,
                     product.description,

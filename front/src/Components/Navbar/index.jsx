@@ -32,6 +32,8 @@ const Navbar = () => {
         closeProductDetail();
         closeCheckoutMenu();
         setJsonWebToken(null);
+        localStorage.removeItem('jsonWebToken');
+        localStorage.removeItem('auth');
     }
 
     return (
@@ -42,48 +44,6 @@ const Navbar = () => {
                         CriStore
                     </NavLink>
                 </li>
-                {/* <li>
-                    <NavLink
-                        to='/'
-                        className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                        All
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink
-                        to='/category/clothes'
-                        className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                        Clothes
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink
-                        to='/category/electronics'
-                        className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                        Electronics
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink
-                        to='/category/furnitures'
-                        className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                        Furnitures
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink
-                        to='/category/toys'
-                        className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                        Toys
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink
-                        to='/category/others'
-                        className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                        Others
-                    </NavLink>
-                </li> */}
             </ul>
             <ul className="flex items-center gap-3">
                 {auth && Object.entries(auth).length > 0 &&
@@ -91,7 +51,7 @@ const Navbar = () => {
                         <li className="text-gray-400 font-normal">
                             {auth.email}
                         </li>
-                        {/* <li>
+                        <li>
                             <NavLink
                                 to='/my-orders'
                                 className={({ isActive }) => (isActive ? activeStyle : undefined)}>
@@ -104,7 +64,7 @@ const Navbar = () => {
                                 className={({ isActive }) => (isActive ? activeStyle : undefined)}>
                                 My Account
                             </NavLink>
-                        </li> */}
+                        </li>
                         <li>
                             <NavLink
                                 id="logOutLink"
@@ -124,6 +84,14 @@ const Navbar = () => {
 
                 }
 
+                {auth && Object.entries(auth).length > 0 && auth.user.rol.id === 1 &&
+                    <li>
+                        <NavLink to='/admin' className="bg-indigo-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-600 transition"
+                        >
+                            <span className="hidden md:inline">Dashboard</span> {/* Oculta texto en móviles */}
+                        </NavLink>
+                    </li>
+                }
 
                 {!auth || Object.entries(auth).length == 0 &&
                     <>

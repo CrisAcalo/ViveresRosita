@@ -77,3 +77,20 @@ export const deleteOrder = async (id) => {
         throw errorMessages || "Error al eliminar pedido";
     }
 };
+
+/**
+ * Actualiza el estado de un pedido por su ID.
+ * @param {number} id - ID del pedido a actualizar.
+ * @param {string} status - Nuevo estado del pedido.
+ * @returns {Promise<Object>} Pedido actualizado.
+ */
+export const updateOrderStatus = async (id, state) => {
+    try {
+        const response = await api.patch(`/orders/${id}`, { state });
+        return response.data;
+    } catch (error) {
+        let errorMessages = ["Error al actualizar el estado"];
+        errorMessages.push(error.response?.data?.message);
+        throw errorMessages || "Error al actualizar el estado";
+    }
+}

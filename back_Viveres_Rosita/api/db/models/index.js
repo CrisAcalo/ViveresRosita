@@ -4,6 +4,7 @@ const { Product, ProductSchema } = require('./product.model');
 const { Category, CategorySchema } = require('./category.model');
 const { Order, OrderSchema } = require('./order.model');
 const { OrderItem, OrderItemSchema } = require('./order_items.model');
+const { Carrier, CarrierSchema } = require('./carrier.model');
 
 function setupModels(sequelize) {
   User.init(UserSchema, User.config(sequelize)); // inicializa el modelo User
@@ -12,6 +13,7 @@ function setupModels(sequelize) {
   Category.init(CategorySchema, Category.config(sequelize)); // inicializa el modelo Category
   Order.init(OrderSchema, Order.config(sequelize)); // inicializa el modelo Order
   OrderItem.init(OrderItemSchema, OrderItem.config(sequelize)); // inicializa el modelo OrderItem
+  Carrier.init(CarrierSchema, Carrier.config(sequelize)); // inicializa el modelo Carrier
 
   User.associate(sequelize.models); // asocia el modelo User con el modelo Customer
   Rol.associate(sequelize.models); // asocia el modelo Rol con el modelo User
@@ -19,6 +21,7 @@ function setupModels(sequelize) {
   Category.associate(sequelize.models); // asocia el modelo Category con el modelo Product
   Order.associate(sequelize.models); // asocia el modelo Order con el modelo User
   OrderItem.associate(sequelize.models); // asocia el modelo OrderItem con el modelo Order
+  Carrier.associate(sequelize.models); // asocia el modelo Carrier con el modelo Order
 }
 
 module.exports = { setupModels };
