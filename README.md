@@ -144,37 +144,38 @@ Para obtener información detallada sobre los endpoints disponibles en la API, c
 ## 📸 Capturas de pantalla
 
 #### 🏠 Dashboard
-![Dashboard](https://i.ibb.co/kV28pJ6D/image.png)
+![Dashboard](https://i.ibb.co/V0YSdxpC/Screenshot-2025-03-05-031204.png)
 
 #### 📊 Gestión de Categorias
-![Categorias](https://i.ibb.co/HTGnbY97/image.png)
+![Categorias](https://i.ibb.co/60DgTbqY/Screenshot-2025-03-05-031218.png)
 
 #### 📂 Gestión de Productos
-![Productos](https://i.ibb.co/fzYF56TD/image.png)
+![Productos](https://i.ibb.co/RkpbmrJj/Screenshot-2025-03-05-031645.png)
 
 #### 📦 Gestión de Ordenes
-![Ordenes](https://i.ibb.co/Zp48y6S5/image.png)
+![Ordenes](https://i.ibb.co/Rkr0LpNf/Screenshot-2025-03-05-031705.png)
 
-#### 📑 Gestión de Órdenes
-![Usuarios](https://i.ibb.co/5XKdZTJk/image.png)
+#### 📑 Gestión de Usuarios
+![Usuarios](https://i.ibb.co/LDNMKSsr/Screenshot-2025-03-05-031717.png)
 
 #### 👤 Pagina Principal
-![Pagina Principal](https://i.ibb.co/0V1v4Fbz/image.png)
+![Pagina Principal](https://i.ibb.co/n84tdnJK/Screenshot-2025-03-05-033053.png)
 
 #### 🛒 Checkout
-![Checkout](https://i.ibb.co/v4481J9z/image.png)
+![Checkout](https://i.ibb.co/MDPMvdk7/Screenshot-2025-03-05-034022.png)
 
 #### 📜 Historial de Órdenes del Usuario
-![Historial de Órdenes](https://i.ibb.co/mCh6jp54/image.png)
+![Historial de Órdenes](https://i.ibb.co/Df26R82N/Screenshot-2025-03-05-034046.png)
 
 #### 📄 Detalle de una Orden
-![Detalle de Orden](https://i.ibb.co/kgvLvK6r/image.png)
+![Detalle de Orden](https://i.ibb.co/vxRNR1vr/Screenshot-2025-03-05-034030.png)
 
-#### 🔐 Listado de Órdenes
-![Ordenes](https://i.ibb.co/chnprCnP/image.png)
+
+#### 🔐 My Account
+![LogIn](https://i.ibb.co/CKKFBnL0/Screenshot-2025-03-05-033101.png)
 
 #### 🔐 LogIn
-![LogIn](https://ibb.co/8DHTXfvQ)
+![LogIn](https://i.ibb.co/JR90CG6S/Screenshot-2025-03-05-034254.png)
 
 #### 🔐 SignUp
-![SignUp](https://ibb.co/C5x0LTPq)
+![SignUp](https://i.ibb.co/27XKJfZw/Screenshot-2025-03-05-034301.png)
