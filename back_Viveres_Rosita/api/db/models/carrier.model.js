@@ -1,4 +1,4 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model, DataTypes, Sequelize } = require('sequelize');
 
 const CARRIER_TABLE = 'carriers';
 
@@ -29,8 +29,9 @@ const CarrierSchema = {
     createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-    }
+        field: 'created_at',
+        defaultValue: Sequelize.fn('now'),
+    },
 };
 
 class Carrier extends Model {
